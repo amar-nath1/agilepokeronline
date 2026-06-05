@@ -1,0 +1,104 @@
+:host {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #fcfcfc;
+  min-height: 100vh;
+  color: #333;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 10px 24px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  border-bottom: 1px solid #eaeaea;
+}
+.logo { display: flex; align-items: center; gap: 8px; }
+.logo-icon {
+  background-color: #e0f2f1;
+  color: #00796b;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 12px;
+  border: 1px dashed #00796b;
+}
+.logo-text { color: #555; font-size: 15px; }
+.nav-center { display: flex; align-items: center; }
+.room-input {
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+  background-color: #f5f5f5;
+  width: 180px;
+}
+.btn-enter {
+  background-color: #00acc1;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.room-share { color: #666; font-size: 14px; }
+.user-avatar {
+  background-color: #4a5568;
+  color: white;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+.menu-toggle { background: none; border: none; font-size: 20px; color: #666; cursor: pointer; }
+.workspace { max-width: 1000px; margin: 0 auto; padding: 32px 20px; }
+.instruction-block h1 { font-size: 15px; font-weight: 500; color: #555; margin-bottom: 4px; }
+.instruction-block p { font-size: 13px; color: #777; margin-top: 0; }
+.instruction-block a { color: #00796b; text-decoration: none; }
+.card-deck { display: flex; flex-wrap: wrap; gap: 16px; margin: 24px 0 40px 0; }
+.poker-card {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  width: 64px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.poker-card:hover { transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+.poker-card.selected { border-color: #00acc1; background-color: #e0f7fa; }
+.card-value { font-size: 22px; font-weight: 400; color: #333; }
+.corner { position: absolute; font-size: 8px; color: #b0bec5; }
+.top-left { top: 4px; left: 6px; }
+.top-right { top: 4px; right: 6px; }
+.bottom-left { bottom: 4px; left: 6px; }
+.bottom-right { bottom: 4px; right: 6px; }
+.section-divider { border: none; border-top: 1px solid #eaeaea; margin: 32px 0; }
+.results-table-container { background: white; border: 1px solid #e2e8f0; border-radius: 6px; margin-top: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); max-width: 500px; }
+.table-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-bottom: 1px solid #edf2f7; background-color: #fafafa; border-top-left-radius: 6px; border-top-right-radius: 6px; }
+.toolbar-center { display: flex; gap: 8px; }
+.btn-primary { background-color: #4f6f8f; color: white; border: none; border-radius: 4px; padding: 8px 16px; font-size: 13px; cursor: pointer; }
+.btn-secondary { background-color: white; color: #555; border: 1px solid #ccd0d5; border-radius: 4px; padding: 8px 16px; font-size: 13px; cursor: pointer; }
+.toolbar-left, .toolbar-right { color: #a0aec0; display: flex; gap: 12px; font-size: 16px; cursor: pointer; }
+.participants-table { width: 100%; border-collapse: collapse; }
+.participants-table th { font-size: 13px; font-weight: 500; color: #718096; padding: 14px 20px; border-bottom: 1px solid #edf2f7; }
+.participants-table td { padding: 16px 20px; font-size: 14px; color: #4a5568; border-bottom: 1px solid #f7fafc; }
+.participant-vote { font-weight: 500; color: #a0aec0; }

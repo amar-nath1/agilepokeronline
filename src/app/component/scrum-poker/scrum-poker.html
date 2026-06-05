@@ -1,0 +1,102 @@
+<div class="poker-container">
+  <!-- Top Navigation Navbar Bar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="logo">
+        <span class="logo-icon">S+P</span>
+        <span class="logo-text">ScrumPoker-online.org</span>
+      </div>
+    </div>
+    
+    <div class="nav-center">
+      <!-- Binding explicitly to Signal via banana-in-a-box notation -->
+      <input type="text" [ngModel]="roomInput()" (ngModelChange)="roomInput.set($event)" placeholder="Enter Room Number" class="room-input">
+      <button (click)="enterRoom()" class="btn-enter">ENTER</button>
+    </div>
+
+    <div class="nav-right">
+      <div class="room-share">
+        <span class="share-icon">🔗</span> Room {{ roomNumber() }}
+      </div>
+      <div class="user-avatar">{{ userInitials() }}</div>
+      <button class="menu-toggle">☰</button>
+    </div>
+  </header>
+
+  <!-- Main Poker Workspace Area -->
+  <main class="workspace">
+    <section class="instruction-block">
+      <h1>Provide an effort estimate - choose one of the cards</h1>
+      <p>Each team member should estimate the complexity of the task (user story) to be completed. <a href="#">Read more...</a></p>
+    </section>
+
+    <!-- Card Selection Deck Grid using Modern Control Flow -->
+    <section class="card-deck">
+      @for (card of pokerCards(); track card) {
+        <div 
+          class="poker-card"
+          [class.selected]="selectedCard() === card"
+          (click)="selectCard(card)">
+          <span class="corner top-left">.</span>
+          <span class="corner top-right">.</span>
+          <div class="card-value">{{ card }}</div>
+          <span class="corner bottom-left">.</span>
+          <span class="corner bottom-right">.</span>
+        </div>
+      }
+    </section>
+
+    <hr class="section-divider">
+
+    <section class="instruction-block">
+      <h1>Reveal the cards</h1>
+      <p>Once everyone has submitted their effort estimates, the organizer reveals the cards. <a href="#">Read more...</a></p>
+    </section>
+
+    <!-- Control Actions Panel & Summary Data Table -->
+    <section class="results-table-container">
+      <div class="table-toolbar">
+        <div class="toolbar-left">
+          <span class="user-status-icon">👤</span>
+        </div>
+        <div class="toolbar-center">
+          <button (click)="deleteEstimates()" class="btn-secondary">Delete Estimates</button>
+          <button (click)="toggleShow()" class="btn-primary">
+            {{ showVotes() ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+        <div class="toolbar-right">
+          <span class="settings-icon">⚙️</span>
+          <span class="fullscreen-icon">⛶</span>
+        </div>
+      </div>
+
+      <table class="participants-table">
+        <thead>
+          <tr>
+            <th align="left">Name</th>
+            <th align="right">Story Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of participants(); track p.name) {
+            <tr>
+              <td align="left" class="participant-name">{{ p.name }}</td>
+              <td align="right" class="participant-vote">
+                @if (!showVotes()) {
+                  <span class="hidden-vote-indicator">
+                    {{ p.vote ? '✓' : '—' }}
+                  </span>
+                } @else {
+                  <span>
+                    {{ p.vote || '—' }}
+                  </span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  </main>
+</div>
