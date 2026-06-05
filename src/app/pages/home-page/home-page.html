@@ -1,0 +1,59 @@
+<div class="page-wrapper">
+  <!-- Top Navigation Header -->
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="logo">
+        <span class="logo-icon">S+P</span>
+        <span class="logo-text">ScrumPoker-online.org</span>
+      </div>
+    </div>
+    
+    <div class="nav-center">
+      <input 
+        type="text" 
+        [ngModel]="roomInput()" 
+        (ngModelChange)="roomInput.set($event)" 
+        (keyup.enter)="enterExistingRoom()"
+        placeholder="Enter Room Number" 
+        class="room-input"
+      >
+      <button (click)="enterExistingRoom()" class="btn-enter">Enter</button>
+    </div>
+
+    <div class="nav-right">
+      <button class="btn-outline">Sign up</button>
+      <button class="btn-outline">Login</button>
+      <button class="menu-toggle">☰</button>
+    </div>
+  </header>
+
+  <!-- Hero Main Presentation Container -->
+  <main class="hero-container">
+    <div class="hero-content">
+      
+      <!-- Left Side Text Callouts -->
+      <section class="hero-left">
+        <h1 class="hero-title">
+          Set up your planning poker in seconds, start estimating story points in scrum poker now
+        </h1>
+        <p class="hero-subtitle">
+          Create your planning room and invite others with a single click
+        </p>
+        <button (click)="createInstantRoom()" class="btn-action">
+          Create Instant Room
+        </button>
+      </section>
+
+      <!-- Right Side Pure CSS Styled Graphic Deck Cards -->
+      <section class="hero-right">
+        <div class="floating-deck">
+          <div class="graphic-card card-1"><div class="card-num">1</div></div>
+          <div class="graphic-card card-2"><div class="card-num">3</div></div>
+          <div class="graphic-card card-3"><div class="card-num">5</div></div>
+          <div class="graphic-card card-4"><div class="card-num">8</div></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
