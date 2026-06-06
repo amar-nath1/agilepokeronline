@@ -1,10 +1,10 @@
-<div class="page-wrapper">
+<div class="page-wrapper" [class.modal-open]="isModalOpen()">
   <!-- Top Navigation Header -->
   <header class="navbar">
     <div class="nav-left">
       <div class="logo">
-        <span class="logo-icon">S+P</span>
-        <span class="logo-text">ScrumPoker-online.org</span>
+        <span class="logo-icon">A+P</span>
+        <span class="logo-text">Agile-Poker-online</span>
       </div>
     </div>
     
@@ -30,8 +30,6 @@
   <!-- Hero Main Presentation Container -->
   <main class="hero-container">
     <div class="hero-content">
-      
-      <!-- Left Side Text Callouts -->
       <section class="hero-left">
         <h1 class="hero-title">
           Set up your planning poker in seconds, start estimating story points in scrum poker now
@@ -39,12 +37,11 @@
         <p class="hero-subtitle">
           Create your planning room and invite others with a single click
         </p>
-        <button (click)="createInstantRoom()" class="btn-action">
+        <button (click)="openRoomModal()" class="btn-action">
           Create Instant Room
         </button>
       </section>
 
-      <!-- Right Side Pure CSS Styled Graphic Deck Cards -->
       <section class="hero-right">
         <div class="floating-deck">
           <div class="graphic-card card-1"><div class="card-num">1</div></div>
@@ -53,7 +50,48 @@
           <div class="graphic-card card-4"><div class="card-num">8</div></div>
         </div>
       </section>
-
     </div>
   </main>
+
+  <!-- POPUP MODAL DIALOG OVERLAY -->
+  @if (isModalOpen()) {
+    <div class="modal-backdrop" (click)="closeRoomModal()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        
+        <div class="modal-scroll-area">
+          <h2 class="modal-title">Create your Instant Room</h2>
+          <p class="modal-description">
+            Set-up in seconds. Use the instant room feature or sign-up to keep the same room number for future plannings - making the set-up even faster. All we need is a display name.
+          </p>
+
+          <div class="input-group" [class.has-error]="showNameError()">
+            <label class="floating-label">Display Name*</label>
+            <input 
+              type="text" 
+              [ngModel]="displayName()" 
+              (ngModelChange)="onNameChange($event)"
+              (keyup.enter)="confirmCreateRoom()"
+              class="modal-input" 
+              autofocus
+            >
+            @if (showNameError()) {
+              <span class="error-message">Come on. Your name should have at least two characters.</span>
+            }
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button (click)="closeRoomModal()" class="btn-cancel">CANCEL</button>
+          <button 
+            (click)="confirmCreateRoom()" 
+            [disabled]="isNameInvalid()" 
+            class="btn-confirm"
+          >
+            CREATE ROOM
+          </button>
+        </div>
+
+      </div>
+    </div>
+  }
 </div>

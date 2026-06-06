@@ -1,96 +1,99 @@
 <div class="poker-container">
-  <!-- Top Navigation Navbar Bar -->
   <header class="navbar">
     <div class="nav-left">
       <div class="logo">
-        <span class="logo-icon">S+P</span>
-        <span class="logo-text">ScrumPoker-online.org</span>
+        <span class="logo-icon">AP</span>
+        <span class="logo-text">Agile-Poker-online</span>
       </div>
     </div>
-    
-    <div class="nav-center">
-      <!-- Binding explicitly to Signal via banana-in-a-box notation -->
-      <input type="text" [ngModel]="roomInput()" (ngModelChange)="roomInput.set($event)" placeholder="Enter Room Number" class="room-input">
-      <button (click)="enterRoom()" class="btn-enter">ENTER</button>
-    </div>
-
     <div class="nav-right">
       <div class="room-share">
-        <span class="share-icon">🔗</span> Room {{ roomNumber() }}
+        <span class="share-icon">🔗</span>
+        <span>Room Number: <strong>{{ roomId() }}</strong></span>
+        <button class="copy-url-btn" type="button" (click)="copyRoomUrl()">Share</button>
+        @if(copySuccess()) {
+          <span class="copy-success">Copied!</span>
+        }
       </div>
-      <div class="user-avatar">{{ userInitials() }}</div>
-      <button class="menu-toggle">☰</button>
+      <div class="user-avatar">You&#8594; {{ currentUsername() }}</div>
     </div>
   </header>
 
-  <!-- Main Poker Workspace Area -->
+  @if (isNameModalOpen()) {
+    <div class="modal-backdrop" (click)="isNameModalOpen.set(false)">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <h2>Enter your display name</h2>
+        <p>Provide your name so the room can identify your vote.</p>
+        <input
+          type="text"
+          [ngModel]="joinName()"
+          (ngModelChange)="onJoinNameChange($event)"
+          (keyup.enter)="confirmJoinRoom()"
+          class="modal-input"
+          autofocus
+        >
+        @if(showJoinNameError()) {
+          <div class="error-message">Please enter at least two characters.</div>
+        }
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="isNameModalOpen.set(false)">Cancel</button>
+          <button type="button" class="btn-primary" (click)="confirmJoinRoom()" [disabled]="isJoinNameInvalid()">Join Room</button>
+        </div>
+      </div>
+    </div>
+  }
+
   <main class="workspace">
     <section class="instruction-block">
       <h1>Provide an effort estimate - choose one of the cards</h1>
-      <p>Each team member should estimate the complexity of the task (user story) to be completed. <a href="#">Read more...</a></p>
+      <p>Each team member should estimate the complexity of the task to be completed.</p>
     </section>
 
-    <!-- Card Selection Deck Grid using Modern Control Flow -->
     <section class="card-deck">
       @for (card of pokerCards(); track card) {
         <div 
           class="poker-card"
           [class.selected]="selectedCard() === card"
           (click)="selectCard(card)">
-          <span class="corner top-left">.</span>
-          <span class="corner top-right">.</span>
           <div class="card-value">{{ card }}</div>
-          <span class="corner bottom-left">.</span>
-          <span class="corner bottom-right">.</span>
         </div>
       }
     </section>
 
     <hr class="section-divider">
 
-    <section class="instruction-block">
-      <h1>Reveal the cards</h1>
-      <p>Once everyone has submitted their effort estimates, the organizer reveals the cards. <a href="#">Read more...</a></p>
-    </section>
-
-    <!-- Control Actions Panel & Summary Data Table -->
     <section class="results-table-container">
       <div class="table-toolbar">
-        <div class="toolbar-left">
-          <span class="user-status-icon">👤</span>
-        </div>
         <div class="toolbar-center">
-          <button (click)="deleteEstimates()" class="btn-secondary">Delete Estimates</button>
+          <button (click)="deleteEstimates()" class="btn-secondary">Reset Room</button>
           <button (click)="toggleShow()" class="btn-primary">
-            {{ showVotes() ? 'Hide' : 'Show' }}
+            {{ showVotes() ? 'Hide Votes' : 'Reveal Cards' }}
           </button>
-        </div>
-        <div class="toolbar-right">
-          <span class="settings-icon">⚙️</span>
-          <span class="fullscreen-icon">⛶</span>
         </div>
       </div>
 
       <table class="participants-table">
         <thead>
           <tr>
-            <th align="left">Name</th>
-            <th align="right">Story Points</th>
+            <th align="left">Participant Name</th>
+            <th align="right">Story Points Status</th>
           </tr>
         </thead>
         <tbody>
-          @for (p of participants(); track p.name) {
+          @for (p of participantsList(); track p.name) {
             <tr>
-              <td align="left" class="participant-name">{{ p.name }}</td>
+              <td align="left" class="participant-name">
+                {{ p.name }}
+              </td>
               <td align="right" class="participant-vote">
                 @if (!showVotes()) {
-                  <span class="hidden-vote-indicator">
-                    {{ p.vote ? '✓' : '—' }}
-                  </span>
+                  @if (p.vote!== null && p.vote !== 'not-voted') {
+                    <span class="hidden-vote-indicator" style="color: #00796b;">✓ Submitted</span>
+                  } @else {
+                    <span class="hidden-vote-indicator blank"></span>
+                  }
                 } @else {
-                  <span>
-                    {{ p.vote || '—' }}
-                  </span>
+                  <strong style="color: #2d3748;">{{ p.vote || 'No Vote' }}</strong>
                 }
               </td>
             </tr>

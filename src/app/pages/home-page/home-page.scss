@@ -153,3 +153,172 @@
 .floating-deck:hover .graphic-card {
   transform: rotate(0deg) translateY(-15px);
 }
+
+
+
+/* Blur backdrop wrapper hook */
+.modal-open .hero-container,
+.modal-open .navbar {
+  filter: blur(4px);
+  pointer-events: none;
+  transition: filter 0.2s ease;
+}
+
+/* Modal Overlay Structural Panels */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  animation: slideUp 0.25s ease-out;
+}
+
+.modal-scroll-area {
+  padding: 32px 32px 16px 32px;
+  overflow-y: auto;
+}
+
+/* Custom subtle scrollbar layout track styles */
+.modal-scroll-area::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-scroll-area::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.modal-scroll-area::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 12px 0;
+}
+
+.modal-description {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #718096;
+  margin: 0 0 32px 0;
+}
+
+/* Form Input Element Styling */
+.input-group {
+  position: relative;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  background: #ffffff;
+}
+
+.input-group:focus-within {
+  border-color: #43b0c6;
+  box-shadow: 0 0 0 1px #43b0c6;
+}
+
+.floating-label {
+  display: block;
+  font-size: 12px;
+  color: #8c1d40;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.modal-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  color: #2d3748;
+  padding: 2px 0;
+}
+
+/* Error Highlights Matching Visual Mock */
+.input-group.has-error {
+  border-color: #b00020;
+}
+.input-group.has-error .floating-label {
+  color: #b00020;
+}
+
+.error-message {
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -22px;
+  font-size: 12px;
+  color: #b00020;
+}
+
+/* Modal Confirmation Layout Drawer Footer */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 24px;
+  border-top: 1px solid #edf2f7;
+  background-color: #ffffff;
+}
+
+.btn-cancel {
+  background: none;
+  border: none;
+  color: #4a5568;
+  font-weight: bold;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.btn-cancel:hover { background-color: #f7fafc; }
+
+.btn-confirm {
+  background-color: #43b0c6;
+  color: white;
+  border: none;
+  font-weight: bold;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(67, 176, 198, 0.2);
+}
+.btn-confirm:disabled {
+  background-color: #e2e8f0;
+  color: #a0aec0;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+ 
