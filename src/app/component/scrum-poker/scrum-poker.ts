@@ -155,6 +155,36 @@ private initializeRoomStream(roomId: string): void {
     const nextShowState = !this.showVotes();
     const visibilityRef = ref(this.db, `rooms/${this.roomId()}/showVotes`);
     set(visibilityRef, nextShowState);
+
+    // Sort participants by vote value in ascending order when revealing
+    if (nextShowState) {
+      const sorted = [...this.participantsList()].sort((a, b) => {
+        return this.getVoteSortValue(a.vote) - this.getVoteSortValue(b.vote);
+      });
+      this.participantsList.set(sorted);
+    }
+  }
+
+  private getVoteSortValue(vote: string | null): number {
+    if (!vote || vote === 'not-voted') return Infinity; // Non-voted participants appear last
+    
+    const voteOrder: { [key: string]: number } = {
+      '?': -1,
+      '☕': -0.5,
+      '0': 0,
+      '0.5': 0.5,
+      '1': 1,
+      '2': 2,
+      '3': 3,
+      '5': 5,
+      '8': 8,
+      '13': 13,
+      '20': 20,
+      '40': 40,
+      '100': 100,
+    };
+    
+    return voteOrder[vote] ?? Infinity;
   }
 
   deleteEstimates(): void {
