@@ -167,11 +167,11 @@ private initializeRoomStream(roomId: string): void {
   }
 
   private getVoteSortValue(vote: string | null): number {
-    if (!vote || vote === 'not-voted') return Infinity; // Non-voted participants appear last
+    if (!vote || vote === 'not-voted') return -3; // Non-voted participants appear first
     
     const voteOrder: { [key: string]: number } = {
-      '?': -1,
-      '☕': -0.5,
+      '?': -2,
+      '☕': -1,
       '0': 0,
       '0.5': 0.5,
       '1': 1,
