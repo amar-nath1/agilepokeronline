@@ -4,7 +4,7 @@
     <div class="nav-left">
       <div class="logo">
         <span class="logo-icon">A+P</span>
-        <span class="logo-text">Agile-Poker-online</span>
+        <span class="logo-text">Agile Poker online</span>
       </div>
     </div>
     
@@ -71,11 +71,12 @@
               [ngModel]="displayName()" 
               (ngModelChange)="onNameChange($event)"
               (keyup.enter)="confirmCreateRoom()"
+              placeholder="Enter name here.."
               class="modal-input" 
               autofocus
             >
             @if (showNameError()) {
-              <span class="error-message">Come on. Your name should have at least two characters.</span>
+              <span class="error-message">Your name should have at least two characters.</span>
             }
           </div>
         </div>
