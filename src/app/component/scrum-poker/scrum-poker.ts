@@ -92,10 +92,18 @@ private initializeRoomStream(roomId: string): void {
       this.showVotes.set(data.showVotes || false);
       
       if (data.participants) {
-        const formattedList = Object.keys(data.participants).map(key => ({
+        let formattedList = Object.keys(data.participants).map(key => ({
           name: key,
           vote: data.participants[key].vote ?? null
         }));
+        
+        // Apply sorting for all participants when votes are revealed
+        if (data.showVotes) {
+          formattedList = formattedList.sort((a, b) => {
+            return this.getVoteSortValue(a.vote) - this.getVoteSortValue(b.vote);
+          });
+        }
+        
         this.participantsList.set(formattedList);
       } else {
         this.participantsList.set([]);
@@ -155,14 +163,7 @@ private initializeRoomStream(roomId: string): void {
     const nextShowState = !this.showVotes();
     const visibilityRef = ref(this.db, `rooms/${this.roomId()}/showVotes`);
     set(visibilityRef, nextShowState);
-
-    // Sort participants by vote value in ascending order when revealing
-    if (nextShowState) {
-      const sorted = [...this.participantsList()].sort((a, b) => {
-        return this.getVoteSortValue(a.vote) - this.getVoteSortValue(b.vote);
-      });
-      this.participantsList.set(sorted);
-    }
+    // Sorting will be applied automatically by initializeRoomStream for all participants
   }
 
   private getVoteSortValue(vote: string | null): number {
