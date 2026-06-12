@@ -83,7 +83,7 @@
           @for (p of participantsList(); track p.name) {
             <tr>
               <td align="left" class="participant-name">
-                {{ p.name }}
+                <strong>{{ p.name }}</strong>
               </td>
               <td align="right" class="participant-vote">
                 @if (!showVotes()) {
@@ -93,7 +93,7 @@
                     <span class="hidden-vote-indicator blank"></span>
                   }
                 } @else {
-                  <strong style="color: #2d3748;">{{ p.vote || 'No Vote' }}</strong>
+                  <p style="color: #2d3748;font-family: Verdana, sans-serif;">{{ p.vote == 'not-voted' ? '-' : p.vote }}</p>
                 }
               </td>
             </tr>
