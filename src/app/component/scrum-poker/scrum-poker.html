@@ -2,20 +2,21 @@
   <header class="navbar">
     <div class="nav-left">
       <div class="logo">
-        <span class="logo-icon">AP</span>
+        <!-- <span class="logo-icon">AP</span> -->
         <span class="logo-text">Agile Poker online</span>
       </div>
     </div>
+    <div class="user-avatar">Hi {{ currentUsername() }}!</div>
     <div class="nav-right">
       <div class="room-share">
-        <span class="share-icon">🔗</span>
-        <span>Room Number: <strong>{{ roomId() }}</strong></span>
+        <!-- <span class="share-icon">🔗</span> -->
+        <span>Room No: <strong>{{ roomId() }}</strong></span>
         <button class="copy-url-btn" type="button" (click)="copyRoomUrl()">Share</button>
         @if(copySuccess()) {
           <span class="copy-success">Copied!</span>
         }
       </div>
-      <div class="user-avatar">You&#8594; {{ currentUsername() }}</div>
+      
     </div>
   </header>
 
@@ -44,62 +45,66 @@
   }
 
   <main class="workspace">
-    <section class="instruction-block">
-      <h1>Provide an effort estimate - choose one of the cards</h1>
-      <p>Each team member should estimate the complexity of the task to be completed.</p>
-    </section>
-
-    <section class="card-deck">
-      @for (card of pokerCards(); track card) {
-        <div 
-          class="poker-card"
-          [class.selected]="selectedCard() === card"
-          (click)="selectCard(card)">
-          <div class="card-value">{{ card }}</div>
+    <div class="main-content">
+      <section class="left-panel">
+        <div class="instruction-block">
+          <h1>Provide an effort estimate - choose one of the cards</h1>
+          <p>Each team member should estimate the complexity of the task to be completed.</p>
         </div>
-      }
-    </section>
 
-    <hr class="section-divider">
-
-    <section class="results-table-container">
-      <div class="table-toolbar">
-        <div class="toolbar-center">
-          <button (click)="deleteEstimates()" class="btn-secondary">Reset Room</button>
-          <button (click)="toggleShow()" class="btn-primary">
-            {{ showVotes() ? 'Hide Votes' : 'Reveal Cards' }}
-          </button>
-        </div>
-      </div>
-
-      <table class="participants-table">
-        <thead>
-          <tr>
-            <th align="left">Participant Name</th>
-            <th align="right">Story Points Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (p of participantsList(); track p.name) {
-            <tr>
-              <td align="left" class="participant-name">
-                <strong>{{ p.name }}</strong>
-              </td>
-              <td align="right" class="participant-vote">
-                @if (!showVotes()) {
-                  @if (p.vote!== null && p.vote !== 'not-voted') {
-                    <span class="hidden-vote-indicator" style="color: #00796b;">✓ Submitted</span>
-                  } @else {
-                    <span class="hidden-vote-indicator blank"></span>
-                  }
-                } @else {
-                  <p style="color: #2d3748;font-family: Verdana, sans-serif;">{{ p.vote == 'not-voted' ? '-' : p.vote }}</p>
-                }
-              </td>
-            </tr>
+        <section class="card-deck">
+          @for (card of pokerCards(); track card) {
+            <div 
+              class="poker-card"
+              [class.selected]="selectedCard() === card"
+              (click)="selectCard(card)">
+              <div class="card-value">{{ card }}</div>
+            </div>
           }
-        </tbody>
-      </table>
-    </section>
+        </section>
+      </section>
+
+      <section class="right-panel">
+        <div class="results-table-container">
+          <div class="table-toolbar">
+            <div class="toolbar-center">
+              <button (click)="deleteEstimates()" class="btn-secondary">Reset Room</button>
+              <button (click)="toggleShow()" class="btn-primary">
+                {{ showVotes() ? 'Hide Votes' : 'Reveal Cards' }}
+              </button>
+            </div>
+          </div>
+
+          <table class="participants-table">
+            <thead>
+              <tr>
+                <th align="left">Participant Name</th>
+                <th align="right">Story Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (p of participantsList(); track p.name) {
+                <tr>
+                  <td align="left" class="participant-name">
+                    <span>{{ p.name }}</span>
+                  </td>
+                  <td align="right" class="participant-vote">
+                    @if (!showVotes()) {
+                      @if (p.vote!== null && p.vote !== 'not-voted') {
+                        <span class="hidden-vote-indicator" style="color: #00796b;">✓ </span>
+                      } @else {
+                        <span class="hidden-vote-indicator blank"></span>
+                      }
+                    } @else {
+                      <span style="color: #2d3748;font-family: Verdana, sans-serif;">{{ p.vote == 'not-voted' ? '-' : p.vote }}</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
   </main>
 </div>
