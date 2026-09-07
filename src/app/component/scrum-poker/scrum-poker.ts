@@ -214,32 +214,73 @@ private initializeRoomStream(roomId: string): void {
     this.isJoinTouched.set(true);
   }
 
+  openEditNameModal(): void {
+    // Prefill modal with current name and open it for editing
+    this.joinName.set(this.currentUsername());
+    this.isJoinTouched.set(false);
+    this.isNameModalOpen.set(true);
+  }
+
   confirmJoinRoom(): void {
      // 1. Prevent submission if the name is invalid
   if (this.isJoinNameInvalid()) {
     this.isJoinTouched.set(true);
     return;
   }
-
-  const name = this.joinName().trim();
+  const newName = this.joinName().trim();
   const currentRoomId = this.roomId();
 
+  const previousName = this.currentUsername();
+  const isRename = !!previousName && previousName !== newName;
+
   // 2. Lock down the user's identity state parameters
-  this.currentUsername.set(name);
+  this.currentUsername.set(newName);
   this.isNameModalOpen.set(false);
 
   if (currentRoomId) {
     // 3. Persist name locally so refreshes keep them logged in
     try {
-      localStorage.setItem(`sp_username_${currentRoomId}`, name);
+      localStorage.setItem(`sp_username_${currentRoomId}`, newName);
     } catch (e) {
       // ignore local storage capacity/security restrictions
     }
 
-    // 4. Connect to Firebase WebSockets and listen to room state mutations.
-    // This method automatically calls registerUserPresence under the hood!
+    if (!previousName) {
+      // First-time join: initialize stream and presence registration
     this.initializeRoomStream(currentRoomId);
+    } else if (isRename) {
+      // Rename existing participant in DB and attach presence to new key
+      this.renameParticipant(currentRoomId, previousName, newName);
+    }
   }
+  }
+
+  private renameParticipant(roomId: string, oldName: string, newName: string): void {
+    if (!roomId || !oldName || !newName || oldName === newName) return;
+
+    // Find current vote locally (listener will eventually sync remote state too)
+    const oldParticipant = this.participantsList().find(p => p.name === oldName);
+    const voteValue = oldParticipant?.vote ?? (this.selectedCard() || 'not-voted');
+
+    const oldRef = ref(this.db, `rooms/${roomId}/participants/${oldName}`);
+    const newRef = ref(this.db, `rooms/${roomId}/participants/${newName}`);
+
+    // 1. Create the new participant node with the existing vote
+    set(newRef, { vote: voteValue })
+      .then(() => {
+        // Attach onDisconnect cleanup for the new node
+        onDisconnect(newRef).remove().catch(err => console.error('onDisconnect attach failed', err));
+
+        // 2. Remove the old participant node
+        set(oldRef, null).catch(err => console.error('Failed to remove old participant node', err));
+
+        // 3. Update local participants list immediately for UX
+        const updated = this.participantsList().map(p => p.name === oldName ? { name: newName, vote: voteValue } : p);
+        this.participantsList.set(updated);
+      })
+      .catch(err => {
+        console.error('Failed to create new participant node during rename:', err);
+      });
   }
 
   

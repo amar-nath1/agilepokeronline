@@ -6,7 +6,10 @@
         <span class="logo-text">Agile Poker online</span>
       </div>
     </div>
-    <div class="user-avatar">Hi {{ currentUsername() }}!</div>
+    <div class="user-avatar">
+      Hi {{ currentUsername() }}!
+      <span type="button" class="edit-name-btn" (click)="openEditNameModal()" aria-label="Edit name" title="Edit name">✏️</span>
+    </div>
     <div class="nav-right">
       <div class="room-share">
         <!-- <span class="share-icon">🔗</span> -->
