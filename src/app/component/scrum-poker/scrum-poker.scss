@@ -9,7 +9,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f7a933e5;
+  background-color: #05cfa3;
+  color: #ffffff;
   padding: 10px 24px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.04);
   border-bottom: 1px solid #eaeaea;
@@ -28,7 +29,7 @@
   font-size: 12px;
   border: 1px dashed #00796b;
 }
-.logo-text { color: #302e2e; font-size: 20px; font-weight: 700; font-family: 'Courier New', monospace;}
+.logo-text { color: #ffffff; font-size: 20px; font-weight: 700; font-family: 'Courier New', monospace;}
 .nav-center { display: flex; align-items: center; }
 .room-input {
   border: 1px solid #ccc;
@@ -51,7 +52,7 @@
 }
 .nav-right { display: flex; align-items: center; gap: 16px; }
 .room-share {
-  color: #666;
+  color: #ffffff;
   font-size: 14px;
   display: inline-flex;
   align-items: center;
@@ -98,7 +99,7 @@
   padding: 4px;
   border-radius: 6px;
   cursor: pointer;
-  color: #4a5568;
+  color: #ffffff;
 }
 .edit-name-btn:hover { background: rgba(0,0,0,0.04); }
 .menu-toggle { background: none; border: none; font-size: 20px; color: #666; cursor: pointer; }
