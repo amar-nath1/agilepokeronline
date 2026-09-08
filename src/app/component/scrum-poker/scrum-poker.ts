@@ -288,6 +288,15 @@ private initializeRoomStream(roomId: string): void {
 
   
 
+  goToRetro(): void {
+    const roomId = this.roomId();
+    if (!roomId) {
+      return;
+    }
+
+    this.router.navigate(['/room', roomId, 'retro']);
+  }
+
   copyRoomUrl(): void {
     // Copy a "clean" room URL without any query parameters (no username)
     const cleanUrl = window.location.origin + window.location.pathname;

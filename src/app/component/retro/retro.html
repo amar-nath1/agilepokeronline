@@ -1,0 +1,77 @@
+@if (isNameModalOpen()) {
+  <div class="modal-backdrop" (click)="isNameModalOpen.set(false)">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h2>Enter your display name</h2>
+      <p>Provide your name so the retro session can attribute your note.</p>
+      <input
+        type="text"
+        [value]="joinName()"
+        (input)="onJoinNameChange($any($event.target).value)"
+        (keyup.enter)="confirmJoinRoom()"
+        class="modal-input"
+        autofocus
+      >
+      @if (isJoinTouched() && isJoinNameInvalid()) {
+        <div class="error-message">Please enter at least two characters.</div>
+      }
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" (click)="isNameModalOpen.set(false)">Cancel</button>
+        <button type="button" class="btn-primary" (click)="confirmJoinRoom()" [disabled]="isJoinNameInvalid()">Join Retro</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (!isNameModalOpen()) {
+  <div class="retro-page">
+    <header class="retro-header">
+      <div>
+        <p class="eyebrow">Retrospective</p>
+        <!-- <h1>Room {{ roomId() }}</h1> -->
+      </div>
+      <button class="back-btn" type="button" (click)="goBackToRoom()">Back to room</button>
+    </header>
+
+    <section class="participants-bar">
+      <span class="participants-label">Participants:</span>
+      @if (retroParticipants().length) {
+        @for (participant of retroParticipants(); track participant) {
+          <span class="participant-pill">{{ participant }}</span>
+        }
+      } @else {
+        <span class="participant-pill muted">No participants yet</span>
+      }
+    </section>
+
+    <section class="retro-grid">
+      @for (column of columns(); track column.id) {
+        <div class="retro-column">
+          <div class="column-header">
+            <h2>{{ column.title }}</h2>
+          </div>
+
+          <div class="notes-list">
+            @for (item of column.items; track item.id) {
+              <article class="note-card">
+                <p>{{ item.text }}</p>
+                <span>— {{ item.author }}</span>
+              </article>
+            }
+          </div>
+
+          <div class="composer">
+            <textarea
+              [value]="draftText()[column.id] ?? ''"
+              (input)="updateDraft(column.id, $any($event.target).value)"
+              rows="3"
+              [attr.placeholder]="'Add a note for ' + column.title"
+            ></textarea>
+            <button type="button" class="add-btn" [disabled]="!canSubmit(column.id)" (click)="addNote(column.id)">
+              Add
+            </button>
+          </div>
+        </div>
+      }
+    </section>
+  </div>
+}
