@@ -109,7 +109,7 @@
 .workspace {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 20px;
+  padding: 10px 20px;
 }
 .main-content {
   display: grid;
@@ -173,10 +173,10 @@
   table-layout: fixed;
 }
 .participants-table thead { position: sticky; top: 0; z-index: 1; background: #fff; }
-.participants-table th { font-size: 13px; font-weight: 500; padding: 14px 20px; border-bottom: 1px solid #edf2f7; }
-.participants-table tbody { display: block; max-height: 420px; overflow-y: auto; }
+.participants-table th { font-size: 14px; font-weight: 500; padding: 14px 20px; border-bottom: 1px solid #edf2f7; }
+.participants-table tbody { display: block; max-height: 68vh; overflow-y: auto; }
 .participants-table tr { display: table; width: 100%; table-layout: fixed; }
-.participants-table td { padding: 16px 20px; font-size: 14px; color: #4a5568; border-bottom: 1px solid #e2e8eb; }
+.participants-table td { padding: 10px 20px; font-size: 14px; color: #4a5568; border-bottom: 1px solid #e2e8eb; }
 .participant-vote { font-weight: 500; color: #a0aec0; }
 .hidden-vote-indicator.blank { display: inline-block; min-width: 1.4rem; height: 1rem; }
 .modal-backdrop {
