@@ -36,7 +36,11 @@ export class ScrumPoker implements OnInit, OnDestroy {
   readonly showJoinNameError = computed(() => this.isNameModalOpen() && this.isJoinTouched() && this.isJoinNameInvalid());
   
   // Reactive Collections
-  readonly participantsList = signal<Participant[]>([]);
+  // Prepopulate with 20 dummy participants for testing scrolling
+  readonly participantsList = signal<Participant[]>(Array.from({ length: 20 }, (_, i) => ({
+    name: `Dummy User ${i + 1}`,
+    vote: 'not-voted'
+  })));
   readonly pokerCards = signal<string[]>(['?', '☕', '0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100']);
 
   private dbSubscription?: Unsubscribe;
@@ -104,7 +108,7 @@ private initializeRoomStream(roomId: string): void {
           });
         }
         
-        this.participantsList.set(formattedList);
+        // this.participantsList.set(formattedList);
       } else {
         this.participantsList.set([]);
       }
