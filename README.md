@@ -44,6 +44,17 @@ To execute unit tests with the [Karma](https://karma-runner.github.io) test runn
 ng test
 ```
 
+## Automatic deployment
+
+The GitHub Actions workflow in `.github/workflows/deploy.yml` builds and deploys
+to the live Firebase Hosting site whenever a commit is pushed to `main`.
+
+Before enabling it, add a repository secret named
+`FIREBASE_SERVICE_ACCOUNT_AGILE_POKER_ONLINE` in **Settings → Secrets and
+variables → Actions**. Set its value to the JSON key for a Google Cloud service
+account with the **Firebase Hosting Admin** role on the `agile-poker-online`
+Firebase project. Keep the key private and do not commit it to the repository.
+
 ## Running end-to-end tests
 
 For end-to-end (e2e) testing, run:
