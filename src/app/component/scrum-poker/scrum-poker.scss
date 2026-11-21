@@ -144,6 +144,12 @@
 .instruction-block p { font-size: 13px; color: #777; margin-top: 0; }
 .instruction-block a { color: #00796b; text-decoration: none; }
 .card-deck { display: flex; flex-wrap: wrap; gap: 16px; margin: 24px 0 0; }
+.card-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
 .poker-card {
   background-color: white;
   border: 1px solid #e0e0e0;
@@ -161,6 +167,40 @@
 .poker-card:hover { transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
 .poker-card.selected { border-color: #00acc1; background-color: #e0f7fa; }
 .card-value { font-size: 22px; font-weight: 400; color: #333; }
+.card-shortcut {
+  min-width: 20px;
+  padding: 2px 5px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  background: #f8fafc;
+  color: #475569;
+  font-family: inherit;
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: center;
+}
+.screen-share-toggle {
+  margin-top: 12px;
+  padding: 5px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #475569;
+  font-size: 12px;
+  cursor: pointer;
+}
+.screen-share-toggle:hover {
+  background: #f8fafc;
+}
+.screen-share-toggle:focus-visible {
+  outline: 2px solid #00796b;
+  outline-offset: 2px;
+}
+.screen-share-hint {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 12px;
+}
 .corner { position: absolute; font-size: 8px; color: #b0bec5; }
 .top-left { top: 4px; left: 6px; }
 .top-right { top: 4px; right: 6px; }

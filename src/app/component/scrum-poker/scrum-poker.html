@@ -67,14 +67,29 @@
 
         <section class="card-deck">
           @for (card of pokerCards(); track card) {
-            <div 
-              class="poker-card"
-              [class.selected]="selectedCard() === card"
-              (click)="selectCard(card)">
-              <div class="card-value">{{ card }}</div>
+            <div class="card-option">
+              <div
+                class="poker-card"
+                [class.selected]="!screenShareMode() && selectedCard() === card"
+                (click)="selectCard(card)">
+                <div class="card-value">{{ card }}</div>
+              </div>
+              @if (screenShareMode()) {
+                <kbd class="card-shortcut">{{ shortcutByCard[card] }}</kbd>
+              }
             </div>
           }
         </section>
+        <button
+          type="button"
+          class="screen-share-toggle"
+          [attr.aria-pressed]="screenShareMode()"
+          (click)="toggleScreenShareMode()">
+          {{ screenShareMode() ? 'Exit screen share mode' : 'Screen share' }}
+        </button>
+        @if (screenShareMode()) {
+          <p class="screen-share-hint">Use the displayed keys to vote. Your selected card stays unhighlighted on this screen.</p>
+        }
       </section>
 
       <section class="right-panel">

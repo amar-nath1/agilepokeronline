@@ -15,6 +15,9 @@ interface Participant {
   selector: 'app-scrum-poker',
   standalone: true,
   imports: [CommonModule, FormsModule],
+  host: {
+    '(window:keydown)': 'handleScreenShareShortcut($event)'
+  },
   templateUrl: './scrum-poker.html',
   styleUrls: ['./scrum-poker.scss']
 })
@@ -35,6 +38,7 @@ export class ScrumPoker implements OnInit, OnDestroy {
   readonly currentUsername = signal<string>('');
   readonly showVotes = signal<boolean>(false);
   readonly selectedCard = signal<string | null>(null);
+  readonly screenShareMode = signal<boolean>(false);
   readonly copySuccess = signal<boolean>(false);
   readonly joinName = signal<string>('');
   readonly isNameModalOpen = signal<boolean>(false);
@@ -48,6 +52,24 @@ export class ScrumPoker implements OnInit, OnDestroy {
   //   vote: 'not-voted'
   // })));
   readonly pokerCards = signal<string[]>(['?', '☕', '0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100']);
+  readonly shortcutByCard: Readonly<Record<string, string>> = {
+    '?': '1',
+    '☕': '2',
+    '0': '3',
+    '0.5': '4',
+    '1': '5',
+    '2': '6',
+    '3': '7',
+    '5': '8',
+    '8': '9',
+    '13': '0',
+    '20': '-',
+    '40': '=',
+    '100': 'Backspace'
+  };
+  private readonly cardByShortcut: Readonly<Record<string, string>> = Object.fromEntries(
+    Object.entries(this.shortcutByCard).map(([card, shortcut]) => [shortcut, card])
+  );
 
   private dbSubscription?: Unsubscribe;
 
@@ -167,6 +189,28 @@ private initializeRoomStream(roomId: string): void {
     // Push local select value changes up to real-time sync matrix nodes
     const voteRef = ref(this.db, `rooms/${this.roomId()}/participants/${this.currentUsername()}/vote`);
     set(voteRef, nextCardValue);
+  }
+
+  toggleScreenShareMode(): void {
+    this.screenShareMode.update(enabled => !enabled);
+  }
+
+  handleScreenShareShortcut(event: KeyboardEvent): void {
+    if (!this.screenShareMode() || event.altKey || event.ctrlKey || event.metaKey) return;
+
+    const target = event.target;
+    if (
+      target instanceof HTMLElement &&
+      target.closest('input, textarea, select, [contenteditable="true"]')
+    ) {
+      return;
+    }
+
+    const card = this.cardByShortcut[event.key];
+    if (!card) return;
+
+    event.preventDefault();
+    this.selectCard(card);
   }
 
   toggleShow(): void {
