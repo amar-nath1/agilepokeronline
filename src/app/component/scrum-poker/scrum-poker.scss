@@ -61,6 +61,22 @@
   align-items: center;
   gap: 10px;
 }
+.team-indicator {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 15px;
+  font-weight: 500;
+}
+.team-indicator strong {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
 .copy-url-btn {
   border: 1px solid #00acc1;
   background: #00acc1;

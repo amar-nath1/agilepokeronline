@@ -25,6 +25,13 @@ export class ScrumPoker implements OnInit, OnDestroy {
 
   // Core Room State Tracking Signals
   readonly roomId = signal<string>('');
+  private readonly teamNamesByRoomId: Record<string, string> = {
+    '1': 'ORT',
+    '2': 'CPT'
+  };
+  readonly teamName = computed(() => {
+    return this.teamNamesByRoomId[this.roomId()] ?? null;
+  });
   readonly currentUsername = signal<string>('');
   readonly showVotes = signal<boolean>(false);
   readonly selectedCard = signal<string | null>(null);

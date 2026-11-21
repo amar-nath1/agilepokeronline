@@ -13,7 +13,11 @@
     <div class="nav-right">
       <div class="room-share">
         <!-- <span class="share-icon">🔗</span> -->
-        <span>Room No: <strong>{{ roomId() }}</strong></span>
+        @if (teamName(); as name) {
+          <span class="team-indicator">Team: <strong>{{ name }}</strong></span>
+        } @else {
+          <span class="team-indicator">Room No.: <strong>{{ roomId() }}</strong></span>
+        }
         <button class="copy-url-btn" type="button" (click)="copyRoomUrl()"><svg xmlns="http://w3.org" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <circle cx="18" cy="5" r="3"></circle>
   <circle cx="6" cy="12" r="3"></circle>
