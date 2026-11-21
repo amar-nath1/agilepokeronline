@@ -15,6 +15,9 @@ interface Participant {
   selector: 'app-scrum-poker',
   standalone: true,
   imports: [CommonModule, FormsModule],
+  host: {
+    '(window:keydown)': 'handleScreenShareShortcut($event)'
+  },
   templateUrl: './scrum-poker.html',
   styleUrls: ['./scrum-poker.scss']
 })
@@ -25,9 +28,17 @@ export class ScrumPoker implements OnInit, OnDestroy {
 
   // Core Room State Tracking Signals
   readonly roomId = signal<string>('');
+  private readonly teamNamesByRoomId: Record<string, string> = {
+    '1': 'ORT',
+    '2': 'CPT'
+  };
+  readonly teamName = computed(() => {
+    return this.teamNamesByRoomId[this.roomId()] ?? null;
+  });
   readonly currentUsername = signal<string>('');
   readonly showVotes = signal<boolean>(false);
   readonly selectedCard = signal<string | null>(null);
+  readonly screenShareMode = signal<boolean>(false);
   readonly copySuccess = signal<boolean>(false);
   readonly joinName = signal<string>('');
   readonly isNameModalOpen = signal<boolean>(false);
@@ -40,7 +51,24 @@ export class ScrumPoker implements OnInit, OnDestroy {
   //   name: `Dummy User ${i + 1}`,
   //   vote: 'not-voted'
   // })));
-  readonly pokerCards = signal<string[]>(['?', '☕', '0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100']);
+  readonly pokerCards = signal<string[]>(['?', '☕', '0', '1', '2', '3', '5', '8', '13', '21', '34', '55']);
+  readonly shortcutByCard: Readonly<Record<string, string>> = {
+    '?': '/',
+    '☕': 'q',
+    '0': '0',
+    '1': '1',
+    '2': '2',
+    '3': '3',
+    '5': '5',
+    '8': '8',
+    '13': 'w',
+    '21': 'e',
+    '34': 'r',
+    '55': 't'
+  };
+  private readonly cardByShortcut: Readonly<Record<string, string>> = Object.fromEntries(
+    Object.entries(this.shortcutByCard).map(([card, shortcut]) => [shortcut, card])
+  );
 
   private dbSubscription?: Unsubscribe;
 
@@ -162,6 +190,28 @@ private initializeRoomStream(roomId: string): void {
     set(voteRef, nextCardValue);
   }
 
+  toggleScreenShareMode(): void {
+    this.screenShareMode.update(enabled => !enabled);
+  }
+
+  handleScreenShareShortcut(event: KeyboardEvent): void {
+    if (!this.screenShareMode() || event.altKey || event.ctrlKey || event.metaKey) return;
+
+    const target = event.target;
+    if (
+      target instanceof HTMLElement &&
+      target.closest('input, textarea, select, [contenteditable="true"]')
+    ) {
+      return;
+    }
+
+    const card = this.cardByShortcut[event.key];
+    if (!card) return;
+
+    event.preventDefault();
+    this.selectCard(card);
+  }
+
   toggleShow(): void {
     const nextShowState = !this.showVotes();
     const visibilityRef = ref(this.db, `rooms/${this.roomId()}/showVotes`);
@@ -176,16 +226,15 @@ private initializeRoomStream(roomId: string): void {
       '?': -2,
       '☕': -1,
       '0': 0,
-      '0.5': 0.5,
       '1': 1,
       '2': 2,
       '3': 3,
       '5': 5,
       '8': 8,
       '13': 13,
-      '20': 20,
-      '40': 40,
-      '100': 100,
+      '21': 21,
+      '34': 34,
+      '55': 55,
     };
     
     return voteOrder[vote] ?? Infinity;
