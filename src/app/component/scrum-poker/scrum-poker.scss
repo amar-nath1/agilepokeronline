@@ -143,7 +143,12 @@
 .instruction-block h1 { font-size: 15px; font-weight: 500; color: #555; margin-bottom: 4px; margin-top: 0; }
 .instruction-block p { font-size: 13px; color: #777; margin-top: 0; }
 .instruction-block a { color: #00796b; text-decoration: none; }
-.card-deck { display: flex; flex-wrap: wrap; gap: 16px; margin: 24px 0 0; }
+.card-deck {
+  display: grid;
+  grid-template-columns: repeat(6, 64px);
+  gap: 16px;
+  margin: 24px 0 0;
+}
 .card-option {
   display: flex;
   flex-direction: column;

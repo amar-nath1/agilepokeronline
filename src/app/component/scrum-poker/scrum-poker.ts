@@ -51,21 +51,20 @@ export class ScrumPoker implements OnInit, OnDestroy {
   //   name: `Dummy User ${i + 1}`,
   //   vote: 'not-voted'
   // })));
-  readonly pokerCards = signal<string[]>(['?', '☕', '0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100']);
+  readonly pokerCards = signal<string[]>(['?', '☕', '0', '1', '2', '3', '5', '8', '13', '21', '34', '55']);
   readonly shortcutByCard: Readonly<Record<string, string>> = {
-    '?': '1',
-    '☕': '2',
-    '0': '3',
-    '0.5': '4',
-    '1': '5',
-    '2': '6',
-    '3': '7',
-    '5': '8',
-    '8': '9',
-    '13': '0',
-    '20': '-',
-    '40': '=',
-    '100': 'Backspace'
+    '?': '/',
+    '☕': 'q',
+    '0': '0',
+    '1': '1',
+    '2': '2',
+    '3': '3',
+    '5': '5',
+    '8': '8',
+    '13': 'w',
+    '21': 'e',
+    '34': 'r',
+    '55': 't'
   };
   private readonly cardByShortcut: Readonly<Record<string, string>> = Object.fromEntries(
     Object.entries(this.shortcutByCard).map(([card, shortcut]) => [shortcut, card])
@@ -227,16 +226,15 @@ private initializeRoomStream(roomId: string): void {
       '?': -2,
       '☕': -1,
       '0': 0,
-      '0.5': 0.5,
       '1': 1,
       '2': 2,
       '3': 3,
       '5': 5,
       '8': 8,
       '13': 13,
-      '20': 20,
-      '40': 40,
-      '100': 100,
+      '21': 21,
+      '34': 34,
+      '55': 55,
     };
     
     return voteOrder[vote] ?? Infinity;
